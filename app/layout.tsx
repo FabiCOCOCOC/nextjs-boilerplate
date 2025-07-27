@@ -1,6 +1,7 @@
 //INCLUDES:
 import type { Metadata } from "next";
 import "./globals.css";
+import SearchBarContainer from "./components/SearchBar";
 
 //INCLUDES: END
 
@@ -16,12 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="data:," />
+      </head>
       <body>
-        <main className="min-h-screen">
-          children
-        </main>
+        {children}
+        <SearchBarContainer />
       </body>
     </html>
   );
-  }
+}
 
