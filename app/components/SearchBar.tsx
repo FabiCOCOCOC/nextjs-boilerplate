@@ -34,6 +34,12 @@ type Suggestions = {
     symbol: string;
 };
 
+interface StockSearchResult {
+    name: string;
+    symbol: string;
+    // Add other properties if needed based on your API response
+}
+
 type SearchBarProps = {
     placeholder?: string;
     onSearch?: (query: string) => void;
@@ -60,9 +66,12 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
                         name: string;
                         symbol: string;
                     }
-                    const formattedSuggestions: FormattedSuggestion[] = results.map((result: StockSearchResult) => ({
-                        name: result.name,
-                    }));
+                    const formattedSuggestions: FormattedSuggestion[] = Array.isArray(results)
+                        ? results.map((result: StockSearchResult) => ({
+                            name: result.name,
+                            symbol: result.symbol,
+                        }))
+                        : [];
                     setSuggestions(formattedSuggestions);
                     setShowSuggestions(true);
                 } catch (error) {

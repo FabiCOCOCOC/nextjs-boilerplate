@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         const result = await yfinance.quote(query);
         
         const stockData = {
-            name: result.name || result.longName || result.symbol || query,
+            name: result.displayName || result.longName || result.symbol || query,
             symbol: result.symbol,
             date: result.regularMarketTime ? new Date(Number(result.regularMarketTime) * 1000) : new Date(),
             open: result.regularMarketOpen ?? 0,
