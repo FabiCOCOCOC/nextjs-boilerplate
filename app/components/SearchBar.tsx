@@ -2,7 +2,7 @@
 import axios from 'axios';
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
-import APICall from '@/lib/StocksApiCall';
+import APICall, { getStockSuggestions } from '@/lib/StocksApiCall';
 
 //styling:
 const SearchComponent = styled.div`
@@ -61,18 +61,8 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
             if (query.trim() !== '' && query.length >= 2) {
                 setIsLoading(true);
                 try {
-                    const results = await APICall(query);
-                    interface FormattedSuggestion {
-                        name: string;
-                        symbol: string;
-                    }
-                    const formattedSuggestions: FormattedSuggestion[] = Array.isArray(results)
-                        ? results.map((result: StockSearchResult) => ({
-                            name: result.name,
-                            symbol: result.symbol,
-                        }))
-                        : [];
-                    setSuggestions(formattedSuggestions);
+                    const results = await getStockSuggestions(query);
+                    setSuggestions(results);
                     setShowSuggestions(true);
                 } catch (error) {
                     console.error("Error fetching stock data:", error);
@@ -114,10 +104,10 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
     };
 
     const handleSuggestionClick = (suggestion: Suggestions) => {
-        setQuery(suggestion.symbol);
+        setQuery(suggestion.name);
         setShowSuggestions(false);
         if (onSearch) {
-            onSearch(suggestion.symbol);
+            onSearch(suggestion.name);
         }
     };
 
@@ -184,7 +174,7 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
                                 fontSize: '0.9em',
                                 color: '#666'
                             }}>
-                                {suggestion.symbol}
+                                {suggestion.name}
                             </span>
                         </li>
                     ))}

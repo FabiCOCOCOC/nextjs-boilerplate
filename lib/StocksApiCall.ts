@@ -12,8 +12,13 @@ export interface StockSearchResult {
     changePercent: number;
 }
 
+export interface StockSuggestion{
+    name: string;
+    symbol: string;
+}
+
 async function APICall(query: string): Promise<StockSearchResult> {
-    const result = await fetch(`/api/stocks?query=${query}`);
+    const result = await fetch(`/api/DataRetrival?query=${query}`);
 
     if (!result.ok) {
         throw new Error(`HTTP error! status: ${result.status}`);
@@ -25,6 +30,15 @@ async function APICall(query: string): Promise<StockSearchResult> {
         ...data,
         date: new Date(data.date)
     };
+}
+
+export async function getStockSuggestions(query: string): Promise<StockSuggestion[]> {
+    const result = await fetch(`/api/AutoCompletion?query=${query}`);
+    if (!result.ok) {
+        throw new Error(`HTTP error! status: ${result.status}`);
+    }
+    const suggestions: StockSuggestion[] = await result.json();
+    return suggestions;
 }
 
 export default APICall;
