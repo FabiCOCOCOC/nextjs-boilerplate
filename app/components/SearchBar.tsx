@@ -1,8 +1,9 @@
 'use client'
-import axios from 'axios';
+//import axios from 'axios';
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
-import APICall, { getStockSuggestions } from '@/lib/StocksApiCall';
+import { useRouter } from 'next/navigation';
+import getStockSuggestions  from '@/lib/StocksApiCall';
 
 //styling:
 const SearchComponent = styled.div`
@@ -53,7 +54,9 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
     const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const searchRef = useRef<HTMLDivElement>(null); // Changed to HTMLDivElement
+    const searchRef = useRef<HTMLDivElement>(null);
+
+    const router = useRouter();
 
     useEffect(() => {
         const fetchSuggestions = async () => {
@@ -103,11 +106,12 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
         setShowSuggestions(false);
     };
 
-    const handleSuggestionClick = (suggestion: Suggestions) => {
-        setQuery(suggestion.name);
+    const handleSuggestionClick = (symbol: string) => {
+        router.push(`/stockInfo/${symbol}`);
+        setQuery(symbol);
         setShowSuggestions(false);
         if (onSearch) {
-            onSearch(suggestion.name);
+            onSearch(symbol);
         }
     };
 
@@ -150,7 +154,7 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
                     {suggestions.map((suggestion, index) => (
                         <li 
                             key={`${suggestion.symbol}-${index}`}
-                            onClick={() => handleSuggestionClick(suggestion)}
+                            onClick={() => handleSuggestionClick(suggestion.symbol)}
                             style={{
                                 padding: '12px',
                                 cursor: 'pointer',
