@@ -15,13 +15,14 @@ export default async function StockInfoPage({ params }: StockInfoPageProps) {
 
     return (
         <div>
-            <div className="bg-gray-200 min-h-screen flex flex-col items-center pt-8">
-                <div className="bg-white w-full max-w-2xl p-10 rounded-lg shadow-md">
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-lg font-bold mb-4">{symbol.toUpperCase()}</h1>
-                    </div>
+    <div className="bg-gray-200 min-h-screen flex flex-col items-center pt-8">
+        <div className="bg-white w-full max-w-4xl min-h-[250px] p-10 rounded-lg shadow-lg">
+                <div className="flex justify-start items-start mb-6">
+                    <h1 className="text-lg font-bold mb-0 text-left">{stockData.longName?.toUpperCase()}</h1>
                 </div>
             </div>
         </div>
+    </div>
+
     );
 }

@@ -17,8 +17,6 @@ export interface StockSuggestion{
     symbol: string;
 }
 
-
-
 async function getStockSuggestions(query: string): Promise<StockSuggestion[]> {
     const result = await fetch(`/api/AutoCompletion?query=${query}`);
     if (!result.ok) {
