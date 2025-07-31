@@ -39,3 +39,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 // for the next js api usage use for the endpoint api / someDirectoryName / route.js!
 // before pushing on github - npm run build    for being sure the integrity and that it can run on the vercel servers. 
 //for local developming npm run dev runs dev local host 300 
+
+
+//tech stak: Tailwind css, node.js tsx routing 

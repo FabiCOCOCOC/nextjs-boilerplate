@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SearchBarContainer from "./components/SearchBar";
+import NavBar from "./components/NavBar";
 
 //INCLUDES: END
 
@@ -17,12 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="data:," />
-      </head>
       <body>
+        <div>
+          <NavBar />
+          <div>
+            <SearchBarContainer />
+          </div>
+        </div>
         {children}
-        <SearchBarContainer />
       </body>
     </html>
   );
