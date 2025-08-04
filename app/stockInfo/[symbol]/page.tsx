@@ -24,7 +24,7 @@ export default async function StockInfoPage({ params }: StockInfoPageProps) {
                         <span className="text-gray-600 mr-20">{stockData?.currency}</span>
                         {typeof stockData?.regularMarketChange === 'number' ? (
                             <span className={stockData.regularMarketChange < 0 ? 'text-red-500' : 'text-green-500'}>
-                                <span className="text-3xl"> {stockData.regularMarketChange < 0 ? "-" : "+"}{stockData.regularMarketChange}</span>
+                                <span className="text-3xl"> {stockData.regularMarketChange < 0 ? "" : "+"}{stockData.regularMarketChange}</span>
                                 <span className="mr-20">{stockData.currency}</span>
                             </span>
                         ) : null}
