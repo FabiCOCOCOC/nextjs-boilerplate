@@ -70,13 +70,12 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
                 } catch (error) {
                     console.error("Error fetching stock data:", error);
                     setSuggestions([]);
+                    setShowSuggestions(false);
                 } finally {
                     setIsLoading(false); // Always set loading to false
                 }
             } else {
-                setSuggestions([]);
-                setShowSuggestions(false);
-                setIsLoading(false);
+                resetSuggestions();
             }
         };
 
@@ -89,6 +88,7 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
         const clickingOutside = (event: MouseEvent) => {
             if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
                 setShowSuggestions(false);
+                setSuggestions([]);
             }
         };
 
@@ -103,13 +103,23 @@ const SearchBarContainer: React.FC<SearchBarProps> = ({
         if (onSearch && query) {
             onSearch(query);
         }
-        setShowSuggestions(false);
+        setQuery(""); 
+        resetSuggestions();
     };
 
-    const handleSuggestionClick = (symbol: string) => {
-        router.push(`/stockInfo/${symbol}`);
-        setQuery(symbol);
+    const resetSuggestions = () => {
+        setSuggestions([]);
         setShowSuggestions(false);
+        setIsLoading(false);
+    }
+
+    const handleSuggestionClick = (symbol: string) => {
+        setQuery("")
+        setSuggestions([]);
+        setShowSuggestions(false);
+        
+        router.push(`/stockInfo/${symbol}`);
+        
         if (onSearch) {
             onSearch(symbol);
         }
