@@ -25,6 +25,7 @@ export default async function StockInfoPage({ params }: StockInfoPageProps) {
             month: 'short'
         }),
         value: data.close,
+        name: stockData.longName ?? ''
     }));
 
     return (

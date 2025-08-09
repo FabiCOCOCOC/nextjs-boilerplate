@@ -15,6 +15,7 @@ import {
 interface StockChartData {
   dates: string;
   value: number;
+  name: string;
 }
 
 interface StockChartProps {
@@ -24,7 +25,7 @@ interface StockChartProps {
 export default function StockChart({ data }: StockChartProps) {
   return (
     <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[400px] md:min-h-[650px] p-4 md:p-10 rounded-lg shadow-lg">
-      <h3 className="text-lg font-semibold mb-4"> -chart</h3>
+      <h3 className="text-lg font-semibold mb-4"> {data[0].name}</h3>
       <div className="w-full h-64">
       <ResponsiveContainer width={500} height={500}>
       <LineChart data={data}>
