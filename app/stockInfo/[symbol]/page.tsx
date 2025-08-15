@@ -1,6 +1,6 @@
 //Shows the infos of the designated stock!
 import yfinance from 'yahoo-finance2';
-import StockChart from '@/lib/plotting';
+import StockChart from '@/app/components/plotting';
 //import ApiTest from '@/tests/ApiTest';
 
 
@@ -13,20 +13,6 @@ interface StockInfoPageProps {
 export default async function StockInfoPage({ params }: StockInfoPageProps) {
     const { symbol } = await params;
     const stockData = await yfinance.quote(symbol);
-
-    const historical = await yfinance.historical(symbol, {
-        period1: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000),
-        period2: new Date(),
-        interval: '1mo',
-    });
-
-    const historicalData = historical.map((data) => ({
-        dates: data.date.toLocaleDateString('en-GB', {
-            month: 'short'
-        }),
-        value: data.close,
-        name: stockData.longName ?? ''
-    }));
 
     return (
     <div>
@@ -53,7 +39,8 @@ export default async function StockInfoPage({ params }: StockInfoPageProps) {
                 </div>
             </div>
                 <div className = "mt-8">    {/* distance between the chart and the infos  */}
-                    <StockChart data={historicalData} />
+                    put here later the plottingn 
+                    <StockChart symbol={stockData.symbol} stockName={stockData.longName} />
                 </div>
         </div>
     </div>
