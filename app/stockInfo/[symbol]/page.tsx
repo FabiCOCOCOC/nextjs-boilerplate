@@ -18,8 +18,7 @@ export default async function StockInfoPage({ params }: StockInfoPageProps) {
     <div className="bg-gray-200 min-h-screen flex flex-col items-center pt-8">
                 <InfoBox StockData={stockData} />
                 <div className = "mt-8">    {/* distance between the chart and the infos  */}
-                    put here later the plottingn 
-                    <StockChart symbol={symbol} stockName={stockData.longName} />
+                        <StockChart symbol={symbol} stockName={stockData.longName} />
                 </div>
         </div>
     </div>
