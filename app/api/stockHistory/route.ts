@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const historical = await yfinance.historical(symbol, {
-      period1: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), // 12 months
+      period1: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), 
       period2: new Date(),
       interval: '1mo',
     });
