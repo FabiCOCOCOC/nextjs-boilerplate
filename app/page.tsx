@@ -2,40 +2,51 @@ import yahooFinance from "yahoo-finance2";
 import StockChart from "@/app/components/plotting";
 
 export default async function Home() {
-  const defaultMarkets = [
-    { code: "US"},
-    { code: "DE"},
-    { code: "JP"}
-  ]
+  const defaultMarkets = [{ code: "US" }, { code: "DE" }];
 
- const trendingData = await yahooFinance.trendingSymbols(defaultMarkets[1].code);
+  const allMarkets = [];
 
- const topStock = trendingData.quotes[0];
+  for (const market of defaultMarkets) {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const name = topStock.symbol;
+      const trendingData = await yahooFinance.trendingSymbols(market.code); //here sometimes there is a await issue.
 
-
-  //const trendingData0 = await yahooFinance.trendingSymbols(defaultMarkets[0].code);
-
+      if (
+        trendingData &&
+        trendingData.quotes &&
+        trendingData.quotes.length > 0
+      ) {
+        const topStock = trendingData.quotes[0];
+        allMarkets.push({
+          symbol: topStock.symbol,
+          name: topStock.symbol,
+          marketCode: market.code,
+        });
+      }
+    } catch (error) {
+      console.error(
+        `Error fetching trending symbols for ${market.code}:`,
+        error
+      );
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold">
-        Trending Stocks 
-      </h1>
+      <h1 className="text-4xl font-bold">Trending Stocks</h1>
 
       <div className="overflow-x-auto pb-6">
-        <div className="flex space-x-8" style={{ width: 'max-content' }}>
-          <h2>
-          {defaultMarkets[1].code}
-          </h2>
-          <StockChart 
-            symbol={name} 
-            stockName={name} // or topStock.shortName
-          />
+        <div className="flex space-x-8" style={{ width: "max-content" }}>
+          {allMarkets.map((market, index) => (
+            <div key={market.symbol}>
+              <h2>{market.marketCode}</h2>
+              <StockChart symbol={market.symbol} stockName={market.name} />
+            </div>
+          ))}
         </div>
       </div>
+      <h1 className="text-4xl font-bold">Global News</h1>
     </div>
   );
 }
-
