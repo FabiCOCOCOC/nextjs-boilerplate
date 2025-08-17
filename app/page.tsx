@@ -8,7 +8,7 @@ export default async function Home() {
     { code: "JP"}
   ]
 
-const trendingData = await yahooFinance.trendingSymbols(defaultMarkets[1].code);
+ const trendingData = await yahooFinance.trendingSymbols(defaultMarkets[1].code);
 
  const topStock = trendingData.quotes[0];
 
