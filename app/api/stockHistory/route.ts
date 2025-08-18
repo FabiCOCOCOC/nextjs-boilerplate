@@ -4,31 +4,49 @@ import yfinance from "yahoo-finance2";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get("symbol");
+  const selectedPeriod = searchParams.get("period") || "1y";
 
   if (!symbol) {
     return NextResponse.json({ error: "Symbol is required" }, { status: 400 });
   }
 
-  try {
-    const historical = await yfinance.historical(symbol, {
-      period1: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000),
-      period2: new Date(),
+  const periodMap: Record<
+    string,
+    { period: Date; interval: "1d" | "1wk" | "1mo" | undefined }
+  > = {
+    "1d": {
+      period: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      interval: "1d",
+    },
+
+    "1w": {
+      period: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      interval: "1wk",
+    },
+    "1mo": {
+      period: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       interval: "1mo",
-    });
+    },
+    "1y": {
+      period: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+      interval: "1mo",
+    },
+  };
 
-    const historicalData = historical.map((data) => ({
-      dates: data.date.toLocaleDateString("en-GB", {
-        month: "short",
-      }),
-      value: data.close,
-    }));
+  const config = periodMap[selectedPeriod] || periodMap["1y"];
 
-    return NextResponse.json(historicalData);
-  } catch (error) {
-    console.error("Error fetching historical data:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch historical data" },
-      { status: 500 }
-    );
-  }
+  const historical = await yfinance.chart(symbol, {
+    period1: config.period,
+    period2: new Date(),
+    interval: config.interval,
+  });
+
+  const historicalData = historical.quotes.map((data) => ({
+    dates: data.date.toLocaleDateString("en-GB", {
+      month: "short",
+    }),
+    value: data.close,
+  }));
+
+  return NextResponse.json(historicalData);
 }
