@@ -12,20 +12,24 @@ export async function GET(request: NextRequest) {
 
   const periodMap: Record<
     string,
-    { period: Date; interval: "1d" | "1wk" | "1mo" | undefined }
+    { period: Date; interval: "1d" | "1wk" | "1mo" | "1h" | undefined }
   > = {
     "1d": {
       period: new Date(Date.now() - 24 * 60 * 60 * 1000),
-      interval: "1d",
+      interval: "1h",
     },
 
     "1w": {
       period: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      interval: "1wk",
+      interval: "1d",
+    },
+    "5d": {
+      period: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+      interval: "1d",
     },
     "1mo": {
       period: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-      interval: "1mo",
+      interval: "1wk",
     },
     "1y": {
       period: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),

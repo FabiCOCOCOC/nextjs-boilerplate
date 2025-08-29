@@ -21,7 +21,7 @@ interface StockChartProps {
   stockName?: string;
 }
 
-type TimePeriod = "1d" | "5d" | "1m" | "6m" | "1y" | "5y" | "max";
+type TimePeriod = "1d" | "1wk" | "1mo" | "6mo" | "1y" | "5y" | "max";
 
 export default function StockChart({ symbol, stockName }: StockChartProps) {
   const [historicalData, setHistoricalData] = useState<StockChartData[]>([]);
@@ -29,9 +29,9 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
 
   const timePeriods = [
     { label: "1d", value: "1d" },
-    { label: "5d", value: "5d" },
-    { label: "1m", value: "1m" },
-    { label: "6m", value: "6m" },
+    { label: "1w", value: "1wk" },
+    { label: "1m", value: "1mo" },
+    { label: "6m", value: "6mo" },
     { label: "1y", value: "1y" },
     { label: "5y", value: "5y" },
     { label: "max", value: "max" },
