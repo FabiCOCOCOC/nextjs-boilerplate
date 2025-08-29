@@ -34,13 +34,13 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold">Trending Stocks</h1>
+      <h1 className="text-4xl font-bold mb-16">Trending Stocks</h1>
 
       <div className="overflow-x-auto pb-6">
         <div className="flex space-x-8" style={{ width: "max-content" }}>
           {allMarkets.map((market, index) => (
             <div key={market.symbol}>
-              <h2>{market.marketCode}</h2>
+              <h2 className="text-xl font-semibold">{market.marketCode}</h2>
               <StockChart symbol={market.symbol} stockName={market.name} />
             </div>
           ))}
