@@ -10,30 +10,54 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Symbol is required" }, { status: 400 });
   }
 
+  const oneDay = 24 * 60 * 60 * 1000;
+  //TODO add return days sometimes it has 28 30 0r 31 days
   const periodMap: Record<
     string,
-    { period: Date; interval: "1d" | "1wk" | "1mo" | "1h" | undefined }
+    {
+      period: Date;
+      interval:
+        | "2m"
+        | "90m"
+        | "60m"
+        | "30m"
+        | "1d"
+        | "1wk"
+        | "1mo"
+        | "1h"
+        | "3mo"
+        | undefined;
+    }
   > = {
     "1d": {
-      period: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      period: new Date(Date.now() - 23 * 60 * 60 * 1000),
       interval: "1h",
     },
 
-    "1w": {
-      period: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      interval: "1d",
-    },
-    "5d": {
-      period: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+    "1wk": {
+      period: new Date(Date.now() - 7 * oneDay),
       interval: "1d",
     },
     "1mo": {
-      period: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      period: new Date(Date.now() - 30 * oneDay),
+      interval: "1d",
+    },
+    "6mo": {
+      period: new Date(Date.now() - 6 * 30 * oneDay),
       interval: "1wk",
     },
+
     "1y": {
-      period: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+      period: new Date(Date.now() - 365 * oneDay),
       interval: "1mo",
+    },
+    "5y": {
+      period: new Date(Date.now() - 5 * 365 * oneDay),
+      interval: "1mo",
+    },
+    max: {
+      period: new Date(Date.now() - 200 * 365 * oneDay), //200 years max
+      interval: "3mo",
     },
   };
 
@@ -46,9 +70,14 @@ export async function GET(request: NextRequest) {
   });
 
   const historicalData = historical.quotes.map((data) => ({
-    dates: data.date.toLocaleDateString("en-GB", {
-      month: "short",
-    }),
+    dates:
+      selectedPeriod === "1d"
+        ? data.date.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })
+        : data.date.toLocaleDateString("en-GB"),
     value: data.close,
   }));
 
