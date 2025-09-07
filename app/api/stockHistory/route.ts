@@ -1,3 +1,4 @@
+import { Percent } from "lucide-react";
 import { NextRequest, NextResponse } from "next/server";
 import yfinance from "yahoo-finance2";
 
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
     }
   > = {
     "1d": {
-      period: new Date(Date.now() - 23 * 60 * 60 * 1000),
+      period: new Date(Date.now() - oneDay),
       interval: "1h",
     },
 
@@ -69,6 +70,9 @@ export async function GET(request: NextRequest) {
     interval: config.interval,
   });
 
+  const firstDataPoint = historical.quotes[0];
+  const lastDataPoint = historical.quotes[historical.quotes.length - 1];
+
   const historicalData = historical.quotes.map((data) => ({
     dates:
       selectedPeriod === "1d"
@@ -79,6 +83,10 @@ export async function GET(request: NextRequest) {
           })
         : data.date.toLocaleDateString("en-GB"),
     value: data.close,
+    percentage:
+      data.close !== null && firstDataPoint.close !== null
+        ? ((data.close - firstDataPoint.close) / firstDataPoint.close) * 100
+        : null,
   }));
 
   return NextResponse.json(historicalData);

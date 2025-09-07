@@ -14,18 +14,27 @@ import {
 interface StockChartData {
   dates: string;
   value: number;
+  percentage?: number;
 }
 
 interface StockChartProps {
   symbol: string;
   stockName?: string;
+  options?: {
+    viewPercentage: boolean;
+  };
 }
 
 type TimePeriod = "1d" | "1wk" | "1mo" | "6mo" | "1y" | "5y" | "max";
 
-export default function StockChart({ symbol, stockName }: StockChartProps) {
+export default function StockChart({
+  symbol,
+  stockName,
+  options,
+}: StockChartProps) {
   const [historicalData, setHistoricalData] = useState<StockChartData[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("1y");
+  const [showPercentage, setShowPercentage] = useState<boolean>(false);
 
   const timePeriods = [
     { label: "1d", value: "1d" },
@@ -56,6 +65,16 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
   return (
     <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[400px] md:min-h-[650px] p-4 md:p-10 rounded-lg shadow-lg">
       <h3 className="text-lg font-semibold mb-4"> {stockName}</h3>
+      <div className="flex space-x-2 mb-4">
+        <button
+          className={`px-4 py-2 rounded-md ${
+            showPercentage ? "bg-green-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => setShowPercentage(!showPercentage)}
+        >
+          {showPercentage ? "Hide" : "Show"} % Change
+        </button>
+      </div>
       <div className="flex space-x-2">
         {timePeriods.map((period) => (
           <button
@@ -82,9 +101,27 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
               height={80}
               interval="preserveStartEnd"
             />
-            <YAxis />
+            <YAxis yAxisId="left" orientation="left" />
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              tickFormatter={(value) => `${value}%`}
+            />
             <Tooltip formatter={(value) => [`Value: ${value}`, "USD"]} />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="value"
+              stroke="#001effff"
+            />
+            {showPercentage && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="percentage"
+                stroke="#ff0000ff"
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </div>
