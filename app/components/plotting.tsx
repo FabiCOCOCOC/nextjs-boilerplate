@@ -20,21 +20,13 @@ interface StockChartData {
 interface StockChartProps {
   symbol: string;
   stockName?: string;
-  options?: {
-    viewPercentage: boolean;
-  };
 }
 
 type TimePeriod = "1d" | "1wk" | "1mo" | "6mo" | "1y" | "5y" | "max";
 
-export default function StockChart({
-  symbol,
-  stockName,
-  options,
-}: StockChartProps) {
+export default function StockChart({ symbol, stockName }: StockChartProps) {
   const [historicalData, setHistoricalData] = useState<StockChartData[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>("1y");
-  const [showPercentage, setShowPercentage] = useState<boolean>(false);
 
   const timePeriods = [
     { label: "1d", value: "1d" },
@@ -66,16 +58,6 @@ export default function StockChart({
     <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[400px] md:min-h-[650px] p-4 md:p-10 rounded-lg shadow-lg">
       <h3 className="text-lg font-semibold mb-4"> {stockName}</h3>
       <div className="flex space-x-2 mb-4">
-        <button
-          className={`px-4 py-2 rounded-md ${
-            showPercentage ? "bg-green-500 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => setShowPercentage(!showPercentage)}
-        >
-          {showPercentage ? "Hide" : "Show"} % Change
-        </button>
-      </div>
-      <div className="flex space-x-2">
         {timePeriods.map((period) => (
           <button
             key={period.value}
@@ -102,26 +84,27 @@ export default function StockChart({
               interval="preserveStartEnd"
             />
             <YAxis yAxisId="left" orientation="left" />
-            <YAxis
-              yAxisId="right"
-              orientation="right"
-              tickFormatter={(value) => `${value}%`}
+            <YAxis yAxisId="right" orientation="right" />
+
+            <Tooltip
+              formatter={(value: any, name: string) => {
+                const baseValue = historicalData[0]?.value || 1;
+                const percentageValue = (value / baseValue - 1).toFixed(2);
+
+                return [
+                  <div key="tooltip">
+                    <div>Volume: ${value}</div>
+                    <div>Change: {percentageValue}%</div>
+                  </div>,
+                ];
+              }}
             />
-            <Tooltip formatter={(value) => [`Value: ${value}`, "USD"]} />
             <Line
               yAxisId="left"
               type="monotone"
               dataKey="value"
               stroke="#001effff"
             />
-            {showPercentage && (
-              <Line
-                yAxisId="right"
-                type="monotone"
-                dataKey="percentage"
-                stroke="#ff0000ff"
-              />
-            )}
           </LineChart>
         </ResponsiveContainer>
       </div>

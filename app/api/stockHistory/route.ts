@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
 
   const oneDay = 24 * 60 * 60 * 1000;
   //TODO add return days sometimes it has 28 30 0r 31 days
+
   const periodMap: Record<
     string,
     {
@@ -82,10 +83,10 @@ export async function GET(request: NextRequest) {
             hour12: false,
           })
         : data.date.toLocaleDateString("en-GB"),
-    value: data.close,
+    value: data.close !== null ? data.close.toFixed(2) : null,
     percentage:
       data.close !== null && firstDataPoint.close !== null
-        ? ((data.close - firstDataPoint.close) / firstDataPoint.close) * 100
+        ? (data.close / firstDataPoint.close).toFixed(2)
         : null,
   }));
 

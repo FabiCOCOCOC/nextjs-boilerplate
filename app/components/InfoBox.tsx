@@ -35,7 +35,7 @@ export default function InfoBox({ StockData }: InfoBoxProps) {
               <span className="text-3xl">
                 {" "}
                 {StockData.regularMarketChange < 0 ? "" : "+"}
-                {StockData.regularMarketChange}
+                {StockData.regularMarketChange.toFixed(2)}
               </span>
               <span className="mr-20">{StockData.currency}</span>
             </span>
@@ -51,7 +51,7 @@ export default function InfoBox({ StockData }: InfoBoxProps) {
               <span className="text-3xl">
                 {" "}
                 {StockData.regularMarketChangePercent < 0 ? "" : "+"}
-                {StockData.regularMarketChangePercent}
+                {StockData.regularMarketChangePercent.toFixed(2)}
               </span>
               <span className="mr-20">%</span>
             </span>
