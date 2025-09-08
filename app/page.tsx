@@ -1,5 +1,6 @@
 import yahooFinance from "yahoo-finance2";
 import StockChart from "@/app/components/plotting";
+import SingleInfoBox from "./components/SingleInfoBox";
 
 export default async function Home() {
   const defaultMarkets = [{ code: "US" }, { code: "DE" }];
@@ -46,7 +47,8 @@ export default async function Home() {
           ))}
         </div>
       </div>
-      <h1 className="text-4xl font-bold">Global News</h1>
+      <h1 className="text-4xl font-bold">Global Indices</h1>
+      <SingleInfoBox market={"US"} />
     </div>
   );
 }

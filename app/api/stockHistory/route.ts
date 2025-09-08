@@ -84,10 +84,6 @@ export async function GET(request: NextRequest) {
           })
         : data.date.toLocaleDateString("en-GB"),
     value: data.close !== null ? data.close.toFixed(2) : null,
-    percentage:
-      data.close !== null && firstDataPoint.close !== null
-        ? (data.close / firstDataPoint.close).toFixed(2)
-        : null,
   }));
 
   return NextResponse.json(historicalData);

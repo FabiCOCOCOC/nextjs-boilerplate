@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 import {
   LineChart,
@@ -56,7 +57,10 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
 
   return (
     <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[400px] md:min-h-[650px] p-4 md:p-10 rounded-lg shadow-lg">
-      <h3 className="text-lg font-semibold mb-4"> {stockName}</h3>
+      <Link href={`/stockInfo/${symbol}`}>
+        <h3 className="text-lg font-semibold mb-4"> {stockName}</h3>
+      </Link>
+
       <div className="flex space-x-2 mb-4">
         {timePeriods.map((period) => (
           <button
