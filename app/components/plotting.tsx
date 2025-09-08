@@ -56,16 +56,19 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
   };
 
   return (
-    <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[400px] md:min-h-[650px] p-4 md:p-10 rounded-lg shadow-lg">
+    <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[300px] md:min-h-[650px] p-2 md:p-10 rounded-lg shadow-lg">
       <Link href={`/stockInfo/${symbol}`}>
-        <h3 className="text-lg font-semibold mb-4"> {stockName}</h3>
+        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-4">
+          {" "}
+          {stockName}
+        </h3>
       </Link>
 
-      <div className="flex space-x-2 mb-4">
+      <div className="flex flex-wrap gap-1 md:gap-2 mb-2 md:mb-4 overflow-x-auto">
         {timePeriods.map((period) => (
           <button
             key={period.value}
-            className={`px-4 py-2 rounded-md ${
+            className={`px-2 py-1 md:px-4 md:py-2 text-sm md:text-base rounded-md ${
               selectedPeriod === period.value
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200"
@@ -76,19 +79,20 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
           </button>
         ))}
       </div>
-      <div className="w-full h-64">
-        <ResponsiveContainer width={500} height={500}>
+      <div className="w-full h-48 md:h-64">
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={historicalData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="dates"
               angle={-45}
               textAnchor="end"
-              height={80}
+              height={60}
               interval="preserveStartEnd"
+              fontSize={10}
             />
-            <YAxis yAxisId="left" orientation="left" />
-            <YAxis yAxisId="right" orientation="right" />
+            <YAxis yAxisId="left" orientation="left" fontSize={10} />
+            <YAxis yAxisId="right" orientation="right" fontSize={10} />
 
             <Tooltip
               formatter={(value: any, name: string) => {
@@ -96,8 +100,8 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
                 const percentageValue = (value / baseValue - 1).toFixed(2);
 
                 return [
-                  <div key="tooltip">
-                    <div>Volume: ${value}</div>
+                  <div key="tooltip" className="text-xs">
+                    <div>Price: ${value}</div>
                     <div>Change: {percentageValue}%</div>
                   </div>,
                 ];
@@ -108,6 +112,7 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
               type="monotone"
               dataKey="value"
               stroke="#001effff"
+              strokeWidth={1}
             />
           </LineChart>
         </ResponsiveContainer>
