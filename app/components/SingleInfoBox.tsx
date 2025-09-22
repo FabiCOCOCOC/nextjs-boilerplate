@@ -13,6 +13,7 @@ interface MarketData {
   symbol: string;
   name: string;
   price: number;
+  percent?: number;
 }
 
 export default function SingleInfoBox({ market }: { market: string }) {
@@ -40,7 +41,8 @@ export default function SingleInfoBox({ market }: { market: string }) {
           return {
             symbol: item.symbol,
             name: item.name,
-            price: data.price ?? item.price,
+            price: data.value,
+            percent: data.regularMarketChangePercent,
           };
         });
 
@@ -55,7 +57,7 @@ export default function SingleInfoBox({ market }: { market: string }) {
   }, [selectedMarket]);
 
   return (
-    <div className="bg-white w-full max-w-xl min-h-[250px] p-10 rounded-lg shadow-lg">
+    <div className="bg-white w-full max-w-sm min-h-[250px] p-10 rounded-lg shadow-lg">
       <div className="mb-6">
         <h1 className="text-lg font-bold mb-4 text-left">{market}</h1>
         <div className="overflow-x-auto">
@@ -78,7 +80,7 @@ export default function SingleInfoBox({ market }: { market: string }) {
                   </td>
                   <td className="py-3 px-4 text-right">{item.price}</td>
                   <td className="py-3 px-4 text-right text-green-500">
-                    +0.00%
+                    {item.percent}
                   </td>
                 </tr>
               ))}

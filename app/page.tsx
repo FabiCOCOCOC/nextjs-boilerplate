@@ -48,7 +48,11 @@ export default async function Home() {
         </div>
       </div>
       <h1 className="text-4xl font-bold">Global Indices</h1>
-      <SingleInfoBox market={"US"} />
+      <div className="flex flex-wrap gap-4 md:gap-8 justify-center w-full">
+        <SingleInfoBox market={"US"} />
+        <SingleInfoBox market={"EU"} />
+        <SingleInfoBox market={"AS"} />
+      </div>
     </div>
   );
 }

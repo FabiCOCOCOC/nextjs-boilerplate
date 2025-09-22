@@ -58,7 +58,7 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
   return (
     <div className="bg-white w-full max-w-screen-xl min-w-0 min-h-[300px] md:min-h-[650px] p-2 md:p-10 rounded-lg shadow-lg">
       <Link href={`/stockInfo/${symbol}`}>
-        <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-4">
+        <h3 className="text-base underline md:text-lg font-semibold mb-2 md:mb-4">
           {" "}
           {stockName}
         </h3>
@@ -79,7 +79,7 @@ export default function StockChart({ symbol, stockName }: StockChartProps) {
           </button>
         ))}
       </div>
-      <div className="w-full h-48 md:h-64">
+      <div className="w-full h-64 md:h-96">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={historicalData}>
             <CartesianGrid strokeDasharray="3 3" />
